@@ -1,0 +1,346 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title> CSV Formatter </title>
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+  </head>
+
+  <body>
+
+
+
+
+    <!--  Might want to display none. this after a file is uploaded. (Replace with a start over button?)    -->
+  <header>
+
+    <img src='../static/images/cdc_image.png'>
+
+
+
+    <div class ="dropZone" id = "dropbox">
+      <h1> Drag over a CSV </h1>
+    </div>
+  </header>
+
+<!-- test form for manual upload -->
+  <form action="/nowhere.php" id="testForm">
+   <input type="file" name="csv" accept="csv/*" id="testInput">
+  </form>
+
+    <!--  Feedback about what files you have loaded / have loaded    -->
+  <output id="list">
+  </output>
+
+  <!-- Temporary header mappings output -->
+  <p>mappings</p>
+  <p id="headerMappings"> </p>
+
+<!-- temp auth reset  -->
+  <form id="logoutTemp" action="/logout" method="get" name="logouter">
+    <input type="submit" value="reset auth" value="0">
+    <input type="hidden" value="reset" name="username" value="0">
+    <input type="hidden" value="reset123456789" name="password" value="0">
+
+  </form>
+
+  <!--  temporary line breaks / replace with CSS    -->
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<!-- onchange="mapping" -->
+  <div class= "format">
+    <p> These should be active only once a file is entered. It will not set a preset without a fitting file loaded. </p>
+    <button name="loadHeaders" type="submit" value='{{previousHeaders}}' onclick='applyLoadedHeader()'>LOAD Previous Headers test temp button thing</button>
+
+
+    <form id="myForm" action="/dropbox/submit-headers" method="post" name="csvFormat">
+      <input type="submit" value="Temp header submit SAVE button thing" value="0">
+      <input type="hidden" value={{companyID}} name="companyID" for="myForm">
+
+
+      <h1> Customer Information </h1>
+      <div class= "row">
+
+
+        <div>
+          <p> Is attention in two columns? </p>
+          <input name="splitAttention" type="checkbox" id="attnChanger" onclick="attnHandler()" value="on" autocomplete="off">
+        </div>
+
+
+        <div class= "fieldBox">
+          <h2> Company </h2>
+          <select name="Company" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox" id="attnBox">
+          <h2> Attention </h2>
+          <select name="Attention" class="fileHeaders attnField">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+
+        <div class= "fieldBox" >
+          <h2> Phone </h2>
+          <select name="Phone" class="fileHeaders">
+            <option value="null">File Headers</option>
+
+          </select>
+        </div>
+
+        <div class= "fieldBox" >
+          <h2> Email </h2>
+          <select name="Email" class="fileHeaders">
+            <option value="null">File Headers</option>
+
+          </select>
+        </div>
+
+        <div class= "fieldBox" >
+          <h2> Fax </h2>
+          <select name="Fax" class="fileHeaders">
+            <option value="null">File Headers</option>
+
+          </select>
+        </div>
+
+      </div>
+
+      <h1> Shipping Address </h1>
+      <div class= "row">
+
+
+        <div class= "fieldBox">
+          <h2> Address1 </h2>
+          <select name="Address1" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Address2 </h2>
+          <select name="Address2" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> City </h2>
+          <select name="City" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+
+        <div class= "fieldBox">
+          <h2> State </h2>
+          <select name="State" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Zip </h2>
+          <select name="Zip" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Country </h2>
+          <select name="Country" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Third row -->
+      <h1> Rename Eventually </h1>
+      <div class= "row">
+
+
+        <div>
+          <p> Mannually select shipping? </p>
+          <input name="manualShipping" type="checkbox" id="shipChanger" onclick="shipHandler()" value="on" autocomplete="off">
+        </div>
+
+        <div class= "fieldBox" id="shipBox">
+          <h2>  Shipping Method </h2>
+          <select name="ShippingMethod" class="fileHeaders shipField">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Shipping Number </h2>
+          <select name="ShippingNumber" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Shipping Notes </h2>
+          <select name="ShippingNotes" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Notes </h2>
+          <select name="Notes" class="fileHeaders">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Row 4 -->
+      <h1> Parts </h1>
+      <div class= "row">
+
+        <div>
+          <p> Mannually select part? </p>
+          <input name="manualPart" type="checkbox" id="partChanger" value="on" onclick="partHandler()" autocomplete="off">
+
+          <p> Quantity 1 default? </p>
+          <input name="defaultQty" type="checkbox" id="defaultQty" value="on" onclick="qtyHandler()" autocomplete="off">
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Part Number </h2>
+          <select name="PartNumber" class="fileHeaders partFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Quantity </h2>
+          <select name="Quantity" class="fileHeaders qtyFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Part Number 2 </h2>
+          <select name="PartNumber2" class="fileHeaders partFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Quantity 2 </h2>
+          <select name="Quantity2" class="fileHeaders qtyFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Part Number 3 </h2>
+          <select name="PartNumber3" class="fileHeaders partFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Quantity 3 </h2>
+          <select name="Quantity3" class="fileHeaders qtyFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+<!-- Temporary second row for parts. -->
+      <!-- </div>
+      <div class= "row"> -->
+
+        <div class= "fieldBox">
+          <h2> Part Number 4 </h2>
+          <select name="PartNumber4" class="fileHeaders partFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Quantity 4 </h2>
+          <select name="Quantity4" class="fileHeaders qtyFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Part Number 5 </h2>
+          <select name="PartNumber5" class="fileHeaders partFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+        <div class= "fieldBox">
+          <h2> Quantity 5 </h2>
+          <select name="Quantity5" class="fileHeaders qtyFields">
+            <option value="null" selected="selected">File Headers</option>
+          </select>
+        </div>
+
+      </div>
+    </form>
+
+
+
+    <form id="orderSubmit" name="orderSubmit" method="post" action="/dropbox/submit-orders">
+
+
+      <input type="hidden" value={{companyID}} name="companyID" form="orderSubmit">
+
+      <input type="submit" value="Submit" id="submit" form="orderSubmit">
+    </form>
+
+
+
+
+  </div>
+
+    <!--  temporary line breaks / replace with CSS    -->
+  <br>
+  <br>
+  <br>
+  <br>
+
+
+
+
+  <!--  temporary line breaks / replace with CSS    -->
+<br>
+<br>
+<br>
+<br>
+
+  <h1> Preview </h1>
+
+
+<!-- Dynamic preview tables -->
+
+
+
+  <table frame="box" id="contents" style="width:100%; height:400px;" border>
+  </table>
+
+
+
+
+<!--  JS stuff.    -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+  <script src="{{ url_for('static', filename='js/jquery-csv-min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/test.js') }}"></script>
+  </body>
+</html>
